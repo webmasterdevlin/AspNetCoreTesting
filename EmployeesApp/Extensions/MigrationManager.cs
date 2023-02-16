@@ -1,34 +1,25 @@
 ﻿using EmployeesApp.Models;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
 
-namespace EmployeesApp.Extensions
+namespace EmployeesApp.Extensions;
+
+public static class MigrationManager
 {
-    public static class MigrationManager
+    public static WebApplication MigrateDatabase(this WebApplication webApp)
     {
-        public static WebApplication MigrateDatabase(this WebApplication webApp)
+        using var scope = webApp.Services.CreateScope();
+        using var appContext = scope.ServiceProvider.GetRequiredService<EmployeeContext>();
+        try
         {
-            using (var scope = webApp.Services.CreateScope())
-            {
-                using (var appContext = scope.ServiceProvider.GetRequiredService<EmployeeContext>())
-                {
-                    try
-                    {
-                        if (appContext.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory")
-                            appContext.Database.Migrate();
-                    }
-                    catch (Exception ex)
-                    {
-                        //Log errors or do anything you think it's needed
-                        throw;
-                    }
-                }
-            }
-
-            return webApp;
+            if (appContext.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory")
+                appContext.Database.Migrate();
         }
+        catch (Exception ex)
+        {
+            //Log errors or do anything you think it's needed
+            throw;
+        }
+
+        return webApp;
     }
 }

@@ -1,11 +1,12 @@
 ﻿using EmployeesApp.Models;
 
-namespace EmployeesApp.Contracts
+namespace EmployeesApp.Contracts;
+
+public interface IEmployeeRepository
 {
-	public interface IEmployeeRepository
-    {
-        IEnumerable<Employee> GetAll();
-        Employee GetEmployee(Guid id);
-        void CreateEmployee(Employee employee);
-    }
+    IEnumerable<Employee> GetAll();
+
+    Employee GetEmployee(Guid id);
+
+    void CreateEmployee(Employee employee);
 }

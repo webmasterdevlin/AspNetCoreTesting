@@ -1,56 +1,54 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+﻿using EmployeesApp.Contracts;
 using EmployeesApp.Models;
-using EmployeesApp.Contracts;
 using EmployeesApp.Validation;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
-namespace EmployeesApp.Controllers
+namespace EmployeesApp.Controllers;
+
+public class EmployeesController : Controller
 {
-    public class EmployeesController : Controller
+    private readonly IEmployeeRepository _repo;
+    private readonly AccountNumberValidation _validation;
+
+    public EmployeesController(IEmployeeRepository repo)
     {
-        private readonly IEmployeeRepository _repo;
-        private readonly AccountNumberValidation _validation;
+        _repo = repo;
+        _validation = new AccountNumberValidation();
+    }
 
-        public EmployeesController(IEmployeeRepository repo)
+    public IActionResult Index()
+    {
+        var employees = _repo.GetAll();
+        return View(employees);
+    }
+
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult Create([Bind("Name,AccountNumber,Age")] Employee employee)
+    {
+        if (!ModelState.IsValid)
         {
-            _repo = repo;
-            _validation = new AccountNumberValidation();
+            return View(employee);
         }
 
-        public IActionResult Index()
+        if (!_validation.IsValid(employee.AccountNumber))
         {
-            var employees = _repo.GetAll();
-            return View(employees);
+            ModelState.AddModelError("AccountNumber", "Account Number is invalid");
+            return View(employee);
         }
 
-        public IActionResult Create()
-        {
-            return View();
-        }
+        _repo.CreateEmployee(employee);
+        return RedirectToAction(nameof(Index));
+    }
 
-        [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Name,AccountNumber,Age")] Employee employee)
-        {
-            if(!ModelState.IsValid)
-            {
-                return View(employee);
-            }
-
-            if (!_validation.IsValid(employee.AccountNumber))
-            {
-                ModelState.AddModelError("AccountNumber", "Account Number is invalid");
-                return View(employee);
-            }
-
-            _repo.CreateEmployee(employee);
-            return RedirectToAction(nameof(Index));
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
