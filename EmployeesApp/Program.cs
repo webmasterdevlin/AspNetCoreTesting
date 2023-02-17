@@ -35,6 +35,7 @@ app.MapControllerRoute(
     pattern: "{controller=Employees}/{action=Index}/{id?}");
 
 app.MigrateDatabase();
+
 app.Run();
 
 public partial class Program

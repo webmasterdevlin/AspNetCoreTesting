@@ -23,7 +23,7 @@ public class TestingWebAppFactory : WebApplicationFactory<Program>
 
             services.AddDbContext<EmployeeContext>(options =>
             {
-                options.UseInMemoryDatabase("InMemoryEmployeeTest");
+                options.UseInMemoryDatabase("InMemoryMvcTestDb");
             });
 
             var sp = services.BuildServiceProvider();
