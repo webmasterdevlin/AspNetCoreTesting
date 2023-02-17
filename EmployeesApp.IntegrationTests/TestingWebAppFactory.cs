@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace EmployeesApp.IntegrationTests;
 
-public class TestingWebAppFactory<TEntryPoint> : WebApplicationFactory<Program> where TEntryPoint : Program
+public class TestingWebAppFactory : WebApplicationFactory<Program>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {

@@ -5,11 +5,11 @@ using Xunit;
 
 namespace EmployeesApp.IntegrationTests;
 
-public class EmployeesControllerIntegrationTests : IClassFixture<TestingWebAppFactory<Program>>
+public class EmployeesControllerIntegrationTests : IClassFixture<TestingWebAppFactory>
 {
     private readonly HttpClient _client;
 
-    public EmployeesControllerIntegrationTests(TestingWebAppFactory<Program> factory)
+    public EmployeesControllerIntegrationTests(TestingWebAppFactory factory)
         => _client = factory.CreateClient();
 
     [Fact]
