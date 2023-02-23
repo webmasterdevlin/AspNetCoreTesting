@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Xunit;
 
 namespace EmployeesApp.IntegrationTests;
@@ -21,8 +22,13 @@ public class EmployeesControllerIntegrationTests : IClassFixture<TestingWebAppFa
 
         var responseString = await response.Content.ReadAsStringAsync();
 
+        // xUnit assertions
         Assert.Contains("Mark", responseString);
         Assert.Contains("Evelin", responseString);
+        
+        // FluentAssertions assertions
+        responseString.Should().Contain("Mark");
+        responseString.Should().Contain("Evelin");
     }
 
     [Fact]
@@ -34,7 +40,11 @@ public class EmployeesControllerIntegrationTests : IClassFixture<TestingWebAppFa
 
         var responseString = await response.Content.ReadAsStringAsync();
 
+        // xUnit assertions
         Assert.Contains("Please provide a new employee data", responseString);
+        
+        // FluentAssertions assertions
+        responseString.Should().Contain("Please provide a new employee data");
     }
 
     [Fact]
@@ -56,7 +66,11 @@ public class EmployeesControllerIntegrationTests : IClassFixture<TestingWebAppFa
 
         var responseString = await response.Content.ReadAsStringAsync();
 
+        // xUnit assertions
         Assert.Contains("Account number is required", responseString);
+        
+        // FluentAssertions assertions
+        responseString.Should().Contain("Account number is required");
     }
 
     [Fact]
@@ -79,7 +93,12 @@ public class EmployeesControllerIntegrationTests : IClassFixture<TestingWebAppFa
 
         var responseString = await response.Content.ReadAsStringAsync();
 
+        // xUnit assertions
         Assert.Contains("New Employee", responseString);
         Assert.Contains("214-5874986532-21", responseString);
+        
+        // FluentAssertions assertions
+        responseString.Should().Contain("New Employee");
+        responseString.Should().Contain("214-5874986532-21");
     }
 }

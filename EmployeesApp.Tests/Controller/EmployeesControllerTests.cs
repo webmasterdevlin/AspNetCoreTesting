@@ -1,6 +1,7 @@
 ﻿using EmployeesApp.Contracts;
 using EmployeesApp.Controllers;
 using EmployeesApp.Models;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Collections.Generic;
@@ -24,6 +25,8 @@ public class EmployeesControllerTests
     {
         var result = _controller.Index();
         Assert.IsType<ViewResult>(result);
+        
+        result.Should().BeOfType<ViewResult>();
     }
 
     [Fact]
@@ -36,7 +39,12 @@ public class EmployeesControllerTests
 
         var viewResult = Assert.IsType<ViewResult>(result);
         var employees = Assert.IsType<List<Employee>>(viewResult.Model);
+        
+        // xUnit assertions
         Assert.Equal(2, employees.Count);
+        
+        // FluentAssertions assertions
+        employees.Count.Should().Be(2);
     }
 
     [Fact]
@@ -44,7 +52,11 @@ public class EmployeesControllerTests
     {
         var result = _controller.Create();
 
+        // xUnit assertions
         Assert.IsType<ViewResult>(result);
+        
+        // FluentAssertions assertions
+        result.Should().BeOfType<ViewResult>();
     }
 
     [Fact]
@@ -59,8 +71,13 @@ public class EmployeesControllerTests
         var viewResult = Assert.IsType<ViewResult>(result);
         var testEmployee = Assert.IsType<Employee>(viewResult.Model);
 
+        // xUnit assertions
         Assert.Equal(employee.AccountNumber, testEmployee.AccountNumber);
         Assert.Equal(employee.Age, testEmployee.Age);
+
+        // FluentAssertions assertions
+        employee.AccountNumber.Should().Be(testEmployee.AccountNumber);
+        employee.Age.Should().Be(testEmployee.Age);
     }
 
     [Fact]
@@ -72,6 +89,7 @@ public class EmployeesControllerTests
 
         _controller.Create(employee);
 
+        // Verify if a member on the mock was invoked. Not to assert values.
         _mockRepo.Verify(x => x.CreateEmployee(It.IsAny<Employee>()), Times.Never);
     }
 
@@ -93,9 +111,15 @@ public class EmployeesControllerTests
         _controller.Create(employee);
         _mockRepo.Verify(x => x.CreateEmployee(It.IsAny<Employee>()), Times.Once);
 
+        // xUnit assertions
         Assert.Equal(emp.Name, employee.Name);
         Assert.Equal(emp.Age, employee.Age);
         Assert.Equal(emp.AccountNumber, employee.AccountNumber);
+
+        // FluentAssertions assertions
+        emp.Name.Should().Be(employee.Name);
+        emp.Age.Should().Be(employee.Age);
+        emp.AccountNumber.Should().Be(employee.AccountNumber);
     }
 
     [Fact]
@@ -112,6 +136,10 @@ public class EmployeesControllerTests
 
         var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
 
+        // xUnit assertions
         Assert.Equal("Index", redirectToActionResult.ActionName);
+
+        // FluentAssertions assertions
+        redirectToActionResult.ActionName.Should().Contain("Index");
     }
 }
