@@ -16,7 +16,7 @@ public class TestingWebAppFactory : WebApplicationFactory<Program>
         {
             var descriptor = services.SingleOrDefault(
                 d => d.ServiceType ==
-                    typeof(DbContextOptions<EmployeeContext>));
+                     typeof(DbContextOptions<EmployeeContext>));
 
             if (descriptor != null)
                 services.Remove(descriptor);
