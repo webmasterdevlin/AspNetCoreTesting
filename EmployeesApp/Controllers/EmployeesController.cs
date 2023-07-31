@@ -27,6 +27,13 @@ public class EmployeesController : Controller
     {
         return View();
     }
+    
+    
+    public IActionResult Details(Guid id)
+    {
+        var employee = _repo.GetEmployee(id);
+        return View(employee);
+    }
 
     [HttpPost]
     public IActionResult Create([Bind("Name,AccountNumber,Age")] Employee employee)
@@ -36,7 +43,7 @@ public class EmployeesController : Controller
             return View(employee);
         }
 
-        if (!_validation.IsValid(employee.AccountNumber))
+        if (employee.AccountNumber != null && !_validation.IsValid(employee.AccountNumber))
         {
             ModelState.AddModelError("AccountNumber", "Account Number is invalid");
             return View(employee);
@@ -45,7 +52,26 @@ public class EmployeesController : Controller
         _repo.CreateEmployee(employee);
         return RedirectToAction(nameof(Index));
     }
-
+    
+    [HttpDelete]
+    public IActionResult Delete(Guid id)
+    {
+        _repo.DeleteEmployee(id);
+        return RedirectToAction(nameof(Index));
+    }
+    
+    [HttpPut]
+    public IActionResult Update(Employee employee)
+    {
+        if (employee.AccountNumber != null && !_validation.IsValid(employee.AccountNumber))
+        {
+            ModelState.AddModelError("AccountNumber", "Account Number is invalid");
+        }
+        
+        _repo.UpdateEmployee(employee);
+        return RedirectToAction(nameof(Index));
+    }
+    
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

@@ -22,4 +22,19 @@ public class EmployeeRepository : IEmployeeRepository
         _context.Add(employee);
         _context.SaveChanges();
     }
+
+    // TODO: DeleteEmployee
+    public void DeleteEmployee(Guid id)
+    {
+        var employee = GetEmployee(id);
+        _context.Remove(employee);
+        _context.SaveChanges();
+    }
+
+    // TODO: UpdateEmployee
+    public void UpdateEmployee(Employee employee)
+    {
+        _context.Update(employee);
+        _context.SaveChanges();
+    }
 }

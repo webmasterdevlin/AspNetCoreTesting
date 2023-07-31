@@ -1,4 +1,5 @@
-﻿using EmployeesApp.Contracts;
+﻿using System;
+using EmployeesApp.Contracts;
 using EmployeesApp.Controllers;
 using EmployeesApp.Models;
 using FluentAssertions;
@@ -141,5 +142,74 @@ public class EmployeesControllerTests
 
         // FluentAssertions assertions
         redirectToActionResult.ActionName.Should().Contain("Index");
+    }
+    
+    [Fact]
+    public void Delete_ActionExecutes_ReturnsARedirectToIndexAction()
+    {
+        // Arrange
+        var guid = Guid.NewGuid();
+        _mockRepo.Setup(repo => repo.GetAll())
+            .Returns(new List<Employee>() { new Employee
+            {
+                Id = guid,
+                Name = "Test Employee",
+                Age = 45,
+                AccountNumber = "123-4356874310-43"
+            }});
+
+        // Act
+        var deleteResult = _controller.Delete(guid);
+        var getResult = _controller.Index();
+        
+        // xUnit assertions
+        var viewResult = Assert.IsType<ViewResult>(getResult);
+        var employees = Assert.IsType<List<Employee>>(viewResult.Model);
+        Assert.Single(employees);
+        
+        var redirectToActionResult = Assert.IsType<RedirectToActionResult>(deleteResult);
+        Assert.Equal("Index", redirectToActionResult.ActionName);
+
+        // FluentAssertions assertions
+        getResult.Should().BeOfType<ViewResult>();
+        var viewResultFa = getResult as ViewResult;
+        viewResultFa?.Model.Should().BeOfType<List<Employee>>();
+        var employeesFa = viewResultFa?.Model as List<Employee>;
+        employeesFa.Should().HaveCount(1);
+        
+        deleteResult.Should().BeOfType<RedirectToActionResult>();
+        var redirectToActionResultFa = deleteResult as RedirectToActionResult;
+        redirectToActionResultFa?.ActionName.Should().Be("Index");
+    }
+    
+    [Fact]
+    public void Update_ActionExecutes_ReturnsARedirectToIndexAction()
+    {
+        // updating then name of an existing employee
+        var guid = Guid.NewGuid();
+
+        var employee = new Employee
+        {
+            Id = guid,
+            Name = "Test Employee",
+            Age = 45,
+            AccountNumber = "123-4356874310-43"
+        };
+
+        _mockRepo.Setup(repo => repo.GetAll())
+            .Returns(new List<Employee>() { employee });
+        
+        employee.Age = 30;
+
+        var result = _controller.Update(employee);
+        
+        // xUnit assertions
+        var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal("Index", redirectToActionResult.ActionName);
+        
+        // FluentAssertions assertions
+        result.Should().BeOfType<RedirectToActionResult>();
+        var redirectToActionResultFa = result as RedirectToActionResult;
+        redirectToActionResultFa?.ActionName.Should().Be("Index");
     }
 }
