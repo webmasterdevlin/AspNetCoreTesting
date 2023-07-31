@@ -53,14 +53,14 @@ public class EmployeesController : Controller
         return RedirectToAction(nameof(Index));
     }
     
-    [HttpDelete]
+    [HttpPost]
     public IActionResult Delete(Guid id)
     {
         _repo.DeleteEmployee(id);
         return RedirectToAction(nameof(Index));
     }
     
-    [HttpPut]
+    [HttpPost]
     public IActionResult Update(Employee employee)
     {
         if (employee.AccountNumber != null && !_validation.IsValid(employee.AccountNumber))
