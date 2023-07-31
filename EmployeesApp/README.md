@@ -3,15 +3,18 @@
 - Note: Create an instance of the database before running the tests
 - Name the database "MvcTestDB"
 
-## Installing Database using Docker
+## Installing MS SQL Server Database using Docker
 
-- https://github.com/webmasterdevlin/docker-compose-database
+- Download or clone this repo https://github.com/webmasterdevlin/docker-compose-database
 - install docker client for your OS
 - Install Azure Data Studio
-- docker commands for each database are located on each Readme.md file
+- Run the docker compose file of the MS SQL Server database
+- Create a database named "MvcTestDb"
 
-## Commands
+## EF Core Tools Installation
 
 - dotnet tool install --global dotnet-ef
+
+## Database Migration
 - dotnet ef migrations add InitialCreate
 - dotnet ef database update
