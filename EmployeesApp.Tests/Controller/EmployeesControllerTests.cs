@@ -25,8 +25,11 @@ public class EmployeesControllerTests
     public void Index_ActionExecutes_ReturnsViewForIndex()
     {
         var result = _controller.Index();
+        
+        // xUnit assertions
         Assert.IsType<ViewResult>(result);
         
+        // FluentAssertions assertions
         result.Should().BeOfType<ViewResult>();
     }
 
