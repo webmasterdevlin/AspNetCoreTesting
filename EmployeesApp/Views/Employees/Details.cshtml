@@ -1,0 +1,14 @@
+@model EmployeesApp.Models.Employee
+
+<h2>@Model.Name</h2>
+
+<p>
+    <strong>Account Number:</strong> @Model.AccountNumber <br />
+    <strong>Age:</strong> @Model.Age
+</p>
+
+<section>
+    <form action="/Employees/Delete/@Model.Id" method="post">
+        <input type="submit" value="Delete" onclick="return confirm('Are you sure you want to delete this employee?');" />
+    </form>
+</section>
