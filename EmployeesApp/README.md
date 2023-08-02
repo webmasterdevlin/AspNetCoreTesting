@@ -1,15 +1,26 @@
 # Writing Automated Tests in ASP.NET Core
 
-- Note: Create an instance of the database before running the tests
-- Name the database "MvcTestDB"
-
 ## Installing MS SQL Server Database using Docker
 
 - Download or clone this repo https://github.com/webmasterdevlin/docker-compose-database
-- install docker client for your OS
-- Install Azure Data Studio
-- Run the docker compose file of the MS SQL Server database
-- Create a database named "MvcTestDb"
+- Install docker client for your OS
+- Skip account creation
+- Skip survey
+- Run the docker compose file of the MS SQL Server database. You might need an admin privilege to run the command below.
+```pwsh
+docker-compose up -d
+```
+- Install Azure Data Studio or update your Azure Data Studio to the latest version
+- Open Azure Data Studio and connect to the database server
+- server: localhost,1433
+- sql login
+- username: sa
+- password: Pass123!
+- Trust Server Certificate: True
+- Name: MSSQLServer
+- Click Connect
+- Right click on the databases folder below MSSQLServer instance and select "New Database (Preview)"
+- Create two databases with "MvcTestDb" and "TestDb" names
 
 ## EF Core Tools Installation
 
