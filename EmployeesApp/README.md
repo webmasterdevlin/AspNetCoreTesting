@@ -1,4 +1,4 @@
-# Writing Automated Tests in ASP.NET Core
+# Automated Software Testing with .NET Core and EF Core
 
 ## Installing MS SQL Server Database using Docker
 
