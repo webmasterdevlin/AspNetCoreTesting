@@ -7,9 +7,7 @@ namespace EmployeesApp.Tests.Validation;
 
 public class AccountNumberValidationTests
 {
-    private readonly AccountNumberValidation _validation;
-
-    public AccountNumberValidationTests() => _validation = new AccountNumberValidation();
+    private readonly AccountNumberValidation _validation = new();
 
     [Fact]
     public void IsValid_ValidAccountNumber_ReturnsTrue()
